@@ -8,10 +8,16 @@ import (
 	"github.com/pip-services3-go/pip-services3-commons-go/config"
 )
 
-var client *version1.PasswordGrpcClientV1
-var fixture *PasswordsClientFixtureV1
+type passwordsGrpcCommandableClientV1Test struct {
+	client  *version1.PasswordGrpcClientV1
+	fixture *PasswordsClientFixtureV1
+}
 
-func setup(t *testing.T) *PasswordsClientFixtureV1 {
+func newPasswordsGrpcCommandableClientV1Test() *passwordsGrpcCommandableClientV1Test {
+	return &passwordsGrpcCommandableClientV1Test{}
+}
+
+func (c *passwordsGrpcCommandableClientV1Test) setup(t *testing.T) *PasswordsClientFixtureV1 {
 	var GRPC_HOST = os.Getenv("GRPC_HOST")
 	if GRPC_HOST == "" {
 		GRPC_HOST = "localhost"
@@ -27,36 +33,39 @@ func setup(t *testing.T) *PasswordsClientFixtureV1 {
 		"connection.port", GRPC_PORT,
 	)
 
-	client = version1.NewPasswordGrpcClientV1()
-	client.Configure(httpConfig)
-	client.Open("")
+	c.client = version1.NewPasswordGrpcClientV1()
+	c.client.Configure(httpConfig)
+	c.client.Open("")
 
-	fixture = NewPasswordsClientFixtureV1(client)
+	c.fixture = NewPasswordsClientFixtureV1(c.client)
 
-	return fixture
+	return c.fixture
 }
 
-func teardown(t *testing.T) {
-	client.Close("")
+func (c *passwordsGrpcCommandableClientV1Test) teardown(t *testing.T) {
+	c.client.Close("")
 }
 
 func TestRecoverPassword(t *testing.T) {
-	fixture := setup(t)
-	defer teardown(t)
+	c := newPasswordsGrpcCommandableClientV1Test()
+	fixture := c.setup(t)
+	defer c.teardown(t)
 
 	fixture.TestRecoverPassword(t)
 }
 
 func TestChangePassword(t *testing.T) {
-	fixture := setup(t)
-	defer teardown(t)
+	c := newPasswordsGrpcCommandableClientV1Test()
+	fixture := c.setup(t)
+	defer c.teardown(t)
 
 	fixture.TestChangePassword(t)
 }
 
 func TestSigninWithWrongPassword(t *testing.T) {
-	fixture := setup(t)
-	defer teardown(t)
+	c := newPasswordsGrpcCommandableClientV1Test()
+	fixture := c.setup(t)
+	defer c.teardown(t)
 
 	fixture.TestSigninWithWrongPassword(t)
 }
