@@ -19,11 +19,13 @@ func NewPasswordsClientFactory() *PasswordsClientFactory {
 	// directClientDescriptor := cref.NewDescriptor("pip-services-sasswords", "client", "direct", "*", "1.0")
 	cmdHttpClientDescriptor := cref.NewDescriptor("pip-services-passwords", "client", "commandable-http", "*", "1.0")
 	grpcClientDescriptor := cref.NewDescriptor("pip-services-passwords", "client", "grpc", "*", "1.0")
+	memoryClientDescriptor := cref.NewDescriptor("pip-services-passwords", "client", "memory", "*", "1.0")
 
 	// c.RegisterType(nullClientDescriptor, clients1.NewPasswordsNullClientV1)
 	// c.RegisterType(directClientDescriptor, clients1.NewPasswordsDirectClientV1)
 	c.RegisterType(cmdHttpClientDescriptor, clients1.NewPasswordsHttpCommandableClientV1)
 	c.RegisterType(grpcClientDescriptor, clients1.NewPasswordGrpcClientV1)
+	c.RegisterType(memoryClientDescriptor, clients1.NewPasswordsMemoryClientV1)
 
 	return c
 }
