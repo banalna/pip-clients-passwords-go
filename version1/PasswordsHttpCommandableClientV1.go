@@ -83,12 +83,12 @@ func (c *PasswordsHttpCommandableClientV1) Authenticate(correlationId string, us
 		return false, err
 	}
 
-	result, ok := res.(map[string]bool)
+	result, ok := res.(*map[string]bool)
 	if !ok {
 		return false, nil
 	}
 
-	val, valOk := result["authenticated"]
+	val, valOk := (*result)["authenticated"]
 	if !valOk {
 		return false, nil
 	}
