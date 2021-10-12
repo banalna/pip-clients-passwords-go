@@ -1,6 +1,6 @@
 module github.com/pip-services-users/pip-clients-passwords-go
 
-go 1.12
+go 1.14
 
 require (
 	github.com/golang/protobuf v1.5.2
